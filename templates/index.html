@@ -1,1 +1,29 @@
-<h1>Hello! This is index</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Posts</title>
+</head>
+<body>
+    {% for post in posts %}
+        <div class="post">
+            <h2>{{ post['title'] }}</h2>
+
+            {% if post['body'] is not none %} 
+            <p>{{ post['body'] }}</p>
+            {% endif %} 
+            
+            {% if post['image'] is not none %}
+            <img src="{{ post['image'] }}">
+            {% endif %}
+            
+            {% if post['file'] is not none %}
+            <a href="{{ post['image'] }}">Download file</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+    </ul>
+</body>
+</html>
