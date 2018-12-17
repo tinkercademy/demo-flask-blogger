@@ -29,6 +29,14 @@ def index():
     db.close()
     return render_template("index.html", posts=posts)
 
+@app.route('/add/<title>')
+def add(title):
+    db = get_db()
+    db.execute('INSERT INTO post(title) VALUES(?)', (title,))
+    db.commit()
+    db.close()
+    return redirect(url_for('index'))
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
