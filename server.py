@@ -1,9 +1,11 @@
 import flask
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 import os
 import sqlite3
 app = flask.Flask(__name__)
+
+UPLOAD_PATH = 'uploads/'
 
 def get_db():
     db = sqlite3.connect('db.sqlite3')
@@ -59,14 +61,14 @@ def create():
 
     if 'image' in request.files:   
         image_file = request.files['image']
-        image_filename = secure_filename(image_file.filename)
+        image_filename = UPLOAD_PATH + secure_filename(image_file.filename)
         image_file.save(image_filename)
     else:
         image_filename = None
 
     if 'file' in request.files:   
         file_file = request.files['file']
-        file_filename = secure_filename(file_file.filename)
+        file_filename = UPLOAD_PATH + secure_filename(file_file.filename)
         file_file.save(file_filename)
     else:
         file_filename = None
@@ -78,6 +80,12 @@ def create():
     db.close()
 
     return redirect(url_for('index'))
+
+
+@app.route('/uploads/<filename>')
+def send_upload(filename):
+    return send_from_directory("uploads", filename)
+
 
 @app.errorhandler(404)
 def page_not_found(e):
