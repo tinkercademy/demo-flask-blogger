@@ -1,5 +1,6 @@
 import flask
 from flask import render_template, request, flash, redirect, url_for
+from werkzeug.utils import secure_filename
 import os
 import sqlite3
 app = flask.Flask(__name__)
@@ -52,6 +53,31 @@ def get_post(id):
 def create():
     if request.method == 'GET':
         return render_template('createpost.html')
+
+    title = request.form['title']
+    body = request.form['body']
+
+    if 'image' in request.files:   
+        image_file = request.files['image']
+        image_filename = secure_filename(image_file.filename)
+        image_file.save(image_filename)
+    else:
+        image_filename = None
+
+    if 'file' in request.files:   
+        file_file = request.files['file']
+        file_filename = secure_filename(file_file.filename)
+        file_file.save(file_filename)
+    else:
+        file_filename = None
+
+    db = get_db()
+    db.execute('INSERT INTO post(title, body, image, file) VALUES (?,?,?,?)',
+                (title, body, image_filename, file_filename))
+    db.commit()
+    db.close()
+
+    return redirect(url_for('index'))
 
 @app.errorhandler(404)
 def page_not_found(e):
