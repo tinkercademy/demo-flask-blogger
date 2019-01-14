@@ -38,6 +38,15 @@ def add(title, body):
     db.close()
     return redirect(url_for('index'))
 
+# Show a single post 
+@app.route('/posts/<id>')
+def get_post(id):
+    db = get_db()
+    cursor = db.execute('SELECT * from post WHERE id=?', (id))
+    post = cursor.fetchone()
+    db.close()
+    return render_template('showpost.html', post=post)
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404

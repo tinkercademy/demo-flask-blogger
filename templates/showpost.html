@@ -1,0 +1,15 @@
+<div class="post">
+    <h2>{{ post['title'] }}</h2>
+
+    {% if post['body'] is not none %} 
+    <p>{{ post['body'] }}</p>
+    {% endif %} 
+    
+    {% if post['image'] is not none %}
+    <img src="{{ post['image'] }}">
+    {% endif %}
+    
+    {% if post['file'] is not none %}
+    <a href="{{ post['image'] }}">Download file</a>
+    {% endif %}
+</div>
