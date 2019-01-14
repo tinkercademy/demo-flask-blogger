@@ -29,10 +29,11 @@ def index():
     db.close()
     return render_template("index.html", posts=posts)
 
-@app.route('/add/<title>')
-def add(title):
+# This is a silly way to insert posts without a GUI!
+@app.route('/add/<title>/<body>')
+def add(title, body):
     db = get_db()
-    db.execute('INSERT INTO post(title) VALUES(?)', (title,))
+    db.execute('INSERT INTO post(title, body) VALUES (?,?)', (title,body))
     db.commit()
     db.close()
     return redirect(url_for('index'))
