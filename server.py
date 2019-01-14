@@ -47,6 +47,12 @@ def get_post(id):
     db.close()
     return render_template('showpost.html', post=post)
 
+# Create post: handle GET (show form) and POST (process form)
+@app.route('/create', methods=['GET', 'POST'])
+def create():
+    if request.method == 'GET':
+        return render_template('createpost.html')
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
